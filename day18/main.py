@@ -6,7 +6,11 @@ with open("input.txt", "r") as file:
     for line in file:
         line = line.strip()
         curr = line.split(" ")
-        direction, length = curr[0], int(curr[1])
+        direction, length, hex = curr
+        map = {0: "R", 1: "D", 2: "L", 3: "U"}
+        direction = map[int(hex[-2])]
+        length = int(hex[2:-2], 16)
+
         if direction == "U":
             y += length
         elif direction == "R":
