@@ -1,8 +1,8 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"regexp"
 	"strconv"
@@ -16,13 +16,14 @@ func main() {
     }
     defer file.Close()
 
-    totalMul := 0
-    scanner := bufio.NewScanner(file)
-    for scanner.Scan() {
-        line := scanner.Text()
-        totalMul += parseMul(line)
+    content, err := io.ReadAll(file)
+    if err != nil {
+        fmt.Println("Error reading file:", err)
+        return
     }
-    fmt.Println(totalMul)
+
+    total := parseMul(string(content))
+	fmt.Println(total)
 }
 
 func parseMul(line string) int {
@@ -38,7 +39,6 @@ func parseMul(line string) int {
 		}
 		// Match is don't()
 		if match == "don't()" {
-			fmt.Println(match)
 			enabled = 0
 		}
 		// Match is a mul
